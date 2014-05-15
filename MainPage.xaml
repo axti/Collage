@@ -1,0 +1,115 @@
+﻿<local:BasePhonePage
+    x:Class="InstaCollage.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:local="clr-namespace:InstaCollage" 
+    mc:Ignorable="d"
+    xmlns:mine="clr-namespace:InstaCollage"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+                                shell:SystemTray.BackgroundColor="#ffa400"
+                            shell:SystemTray.ForegroundColor="WhiteSmoke"
+                            shell:SystemTray.IsVisible="True">
+
+    <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Themes/Generic.xaml" />
+                <ResourceDictionary>
+                    <DataTemplate x:Key="movieItemTemplate">
+                        <Grid Margin="{StaticResource PhoneTouchTargetOverhang}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="{Binding thumbnail_url}" />
+                                <TextBlock Text="{Binding likes_count}" />
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+    <Grid x:Name="LayoutRoot" Style="{StaticResource PageLayoutRootStyle}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- ПРИМЕЧАНИЕ О ЛОКАЛИЗАЦИИ:
+            Чтобы локализовать отображаемые строки, скопируйте их значения в соответствующим образом названные
+            ключи в файле ресурсов нейтрального языка приложения (AppResources.resx), а затем
+            замените жестко заданное текстовое значение между кавычками атрибутов
+            на выражение привязки, указывающее на имя соответствующей строки.
+
+            Пример:
+
+                Text="{Binding Path=LocalizedResources.ApplicationTitle, Source={StaticResource LocalizedStrings}}"
+
+            Данная привязка указывает на строковый ресурс шаблона с именем "ApplicationTitle".
+
+            Добавление поддерживаемых языков на вкладку "Свойства проекта" создает
+            новый RESX-файл для каждого языка, в котором могут храниться переведенные значения
+            строк пользовательского интерфейса. Привязка в этих примерах вызывает отрисовку
+            значений атрибутов из RESX-файла, соответствующего
+            CurrentUICulture приложения во время выполнения.
+         -->
+
+        <!--TitlePanel содержит имя приложения и заголовок страницы-->
+        <StackPanel x:Name="TitlePanel" Grid.Row="0" Margin="12,17,0,28" Orientation="Horizontal">
+            <Image Source="/Assets/Instagram_logo.png" Stretch="UniformToFill" Width="80" Height="80" />
+            <!--<TextBlock Text="Insta Collage" Style="{StaticResource PhoneTextNormalStyle}" Margin="12,0"/>-->
+            <TextBlock Text="InstaCollage" Margin="9,-7,0,0" Style="{StaticResource PhoneTextTitle1Style}" Foreground="Black"/>
+
+        </StackPanel>
+        <TextBlock x:Name="tbMemory" Text="qqq" Foreground="Red" FontSize="25" FontWeight="Bold" FontFamily="Segoe UI Mono" RenderTransformOrigin="0.5,0.5" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="109,101,0,0" Grid.RowSpan="2">
+
+        </TextBlock>
+        <!--ContentPanel — поместите здесь дополнительное содержимое-->
+        <Grid x:Name="ContentPanel" Grid.Row="1" Margin="12,0,12,0" >
+            <Grid.RowDefinitions>
+                <RowDefinition Height="180"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <StackPanel Grid.Row="0" >
+                <TextBlock Text="Ник пользователя из инстаграма:" Margin="16,0" FontSize="{StaticResource PhoneFontSizeSmall}"
+                               Foreground="DimGray"/>
+                <TextBox  x:Name="nickname" Text="" Style="{StaticResource InstaTextBoxStyle}" Padding="2" Margin="12,0" TextChanged="nickname_TextChanged" />
+                <Button Content="Давай коллаж" Click="Button_Click" Foreground="Black "  IsEnabled="{Binding IsCanGetData}" BorderBrush="Black"/>
+
+            </StackPanel>
+            <phone:LongListSelector x:Name="LLS_items" Grid.Row="1"   ItemTemplate="{StaticResource movieItemTemplate}" Visibility="Collapsed" />
+            <Image Name="ImageCollage" Margin="5,0,10,10"  
+               Grid.Row="1" 
+               Source="/Assets/Instagram_logo.png" Stretch="None" RenderTransformOrigin="0.5,0.5" CacheMode="BitmapCache" />
+            <mine:ListPicker x:Name="listPicker2"  Visibility="Collapsed"
+                                     ExpansionMode="FullScreenOnly" Header="Выберите файлы для коллажа" SelectionChanged="listPicker_SelectionChanged"
+                                     FullModeHeader="Выберите файлы для коллажа"  CacheMode="BitmapCache" 
+                                     PickerPageUri="/ListPickerPage.xaml" SelectionMode="Multiple"
+                                     >
+
+            </mine:ListPicker>
+        </Grid>
+
+    </Grid>
+    <phone:PhoneApplicationPage.ApplicationBar>
+
+        <shell:ApplicationBar  IsMenuEnabled="False" Opacity="1.0">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton x:Name="SendEmailButton" Text="Send email" IconUri="/Assets/AppBar/feature.email.png" IsEnabled="False" Click="SendEmailButton_Click"/>
+                <shell:ApplicationBarIconButton x:Name="SaveImageButton" Text="Save" IconUri="/Assets/AppBar/save.png" Click="SaveImageButton_Click" IsEnabled="False"/>
+                <shell:ApplicationBarIconButton x:Name="CheckButton" Text="Check" IconUri="/Assets/Icons/Check boxes.png" IsEnabled="False" Click="CheckButton_Click"/>
+                <shell:ApplicationBarIconButton x:Name="SettingsButton" Text="Images quality" IconUri="/Assets/AppBar/feature.settings.png" Click="SettingsButton_Click"/>
+            </shell:ApplicationBar.Buttons>
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.ApplicationBar>
+</local:BasePhonePage>

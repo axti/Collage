@@ -1,0 +1,189 @@
+﻿<local:BasePhonePage
+    x:Class="InstaCollage.ComposeEmailPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:phone="clr-namespace:Microsoft.Phone.Controls;assembly=Microsoft.Phone"
+    xmlns:shell="clr-namespace:Microsoft.Phone.Shell;assembly=Microsoft.Phone"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    FontFamily="{StaticResource PhoneFontFamilyNormal}"
+    FontSize="{StaticResource PhoneFontSizeNormal}"
+    Foreground="{StaticResource PhoneForegroundBrush}"
+    SupportedOrientations="Portrait" Orientation="Portrait"
+    mc:Ignorable="d"
+    xmlns:local="clr-namespace:InstaCollage" 
+    shell:SystemTray.BackgroundColor="#ffa400"
+                            shell:SystemTray.ForegroundColor="WhiteSmoke"
+                            shell:SystemTray.IsVisible="True">
+    <phone:PhoneApplicationPage.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="./Themes/Generic.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </phone:PhoneApplicationPage.Resources>
+    <!--LayoutRoot представляет корневую сетку, где размещается все содержимое страницы-->
+    <Grid x:Name="LayoutRoot" Style="{StaticResource PageLayoutRootStyle}">
+        <Grid.Background>
+            <SolidColorBrush Color="DimGray" />
+        </Grid.Background>
+        <Grid x:Name="_emailTemplateLayoutRoot" Background="White">
+            <Grid.Resources>
+                <Storyboard x:Name="_animateEmailSendingStoryboard">
+                    <DoubleAnimation Duration="0:0:.2"
+                                     Storyboard.TargetName="_emailTemplatePlaneProjection"
+                                     Storyboard.TargetProperty="GlobalOffsetZ"
+                                     To="-400" />
+                    <DoubleAnimation Duration="0:0:.1"
+                                     Storyboard.TargetName="_emailTemplateLayoutRoot"
+                                     Storyboard.TargetProperty="Opacity"
+                                     To=".2" />
+                </Storyboard>
+                <Storyboard x:Name="_animateEmailSentStoryboard">
+                    <DoubleAnimation Duration="0:0:.5"
+                                     Storyboard.TargetName="_emailTemplateTranslateTransform"
+                                     Storyboard.TargetProperty="Y"
+                                     To="-1280" />
+                    <DoubleAnimation Duration="0:0:.1"
+                                     Storyboard.TargetName="_emailTemplateLayoutRoot"
+                                     Storyboard.TargetProperty="Opacity"
+                                     To="1" />
+                </Storyboard>
+            </Grid.Resources>
+            <Grid.RenderTransform>
+                <TranslateTransform x:Name="_emailTemplateTranslateTransform" />
+            </Grid.RenderTransform>
+            <Grid.Projection>
+                <PlaneProjection x:Name="_emailTemplatePlaneProjection" />
+            </Grid.Projection>
+
+            <Image Opacity=".5" Source="/Assets/EMail.png"></Image>
+            <Grid Margin="22 42 22 14">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <Border BorderBrush="Black" BorderThickness="0 0 0 1">
+                    <Grid Margin="0 0 0 10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                            <ColumnDefinition Width="Auto" />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Top"
+                                   FontSize="{StaticResource PhoneFontSizeMedium}"
+                                   Foreground="Black"
+                                   Text="Кому:" />
+                        <TextBox x:Name="emailAddress"
+                                 Grid.Column="1"
+                                 Margin="10 0 10 0"
+                                 VerticalAlignment="Bottom"
+                                 VerticalContentAlignment="Bottom"
+                                 InputScope="EmailUserName"
+                                 KeyDown="_emailAddress_OnKeyDown"
+                                 Style="{StaticResource TextBoxWithNoBorderStyle}"
+                                 Text="{Binding EmailTo,
+                                                Mode=TwoWay}"
+                                 TextWrapping="Wrap">
+
+                        </TextBox>
+                        <!--  Maybe will use it later  -->
+                    <local:ImageButton Grid.Column="2"
+                                                        Width="52"
+                                                        Height="52"
+                                                        BorderThickness="2"
+                                                        BorderBrush="{StaticResource InstaAccentBrush}"
+                                                        VerticalAlignment="Center"
+                                                        BackgroundImageSource="./Assets/Icons/add_accent.png"
+                                                        Style="{StaticResource RoundButtonStyle}" Click="ImageButton_Click">
+                       
+                    </local:ImageButton>
+                    </Grid>
+                </Border>
+
+                <Border Grid.Row="1"
+                        Margin="0 20 0 0"
+                        BorderBrush="Black"
+                        BorderThickness="0 0 0 1">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition />
+                        </Grid.ColumnDefinitions>
+                        <TextBlock VerticalAlignment="Top"
+                                   FontSize="{StaticResource PhoneFontSizeMedium}"
+                                   Foreground="Black"
+                                   Text="Тема:" />
+                        <TextBox x:Name="emailSubject"
+                                 Grid.Column="1"
+                                 Margin="10 0 10 0"
+                                 VerticalAlignment="Bottom"
+                                 VerticalContentAlignment="Bottom"
+                                 KeyDown="_emailSubject_OnKeyDown"
+                                 Style="{StaticResource TextBoxWithNoBorderStyle}"
+                                 Text="{Binding EmailSubject,
+                                                Mode=TwoWay}"
+                                 TextWrapping="Wrap">
+
+                        </TextBox>
+                    </Grid>
+                </Border>
+
+                <Grid Grid.Row="2">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="Auto" />
+                    </Grid.ColumnDefinitions>
+                    <Image Width="34"
+                           Height="34"
+                           VerticalAlignment="Center" Source="/Assets/jpg.png" />
+                    <StackPanel Grid.Column="1" Margin="10 0 0 0">
+                        <TextBlock Foreground="Black" Text="{Binding AttachmentFileName}" />
+                        <TextBlock FontSize="{StaticResource PhoneFontSizeSmall}" Foreground="DimGray">
+                            <Run Text="(" />
+                            <Run Text="{Binding AttachmentFileType}" />
+                            <Run Text=", " />
+                            <Run Text="{Binding AttachmentFileSize, Converter={StaticResource SizeToDisplayStringConverter}}" />
+                            <Run Text=")" />
+                        </TextBlock>
+                    </StackPanel>
+                </Grid>
+
+                <Grid Grid.Row="3" Margin="0 10 0 0">
+                    <TextBox x:Name="emailBody"
+                             VerticalAlignment="Stretch"
+                             VerticalContentAlignment="Top"
+                             AcceptsReturn="True"
+                             InputScope="Text"
+                             Style="{StaticResource TextBoxWithNoBorderStyle}"
+                             Text="{Binding EmailBody,
+                                            Mode=TwoWay}"
+                             TextWrapping="Wrap">
+
+                    </TextBox>
+                </Grid>
+            </Grid>
+        </Grid>
+        <local:LoadingControl IsIndeterminate="False"
+                           ForegroundBrush="#FFFFA400"
+                           ProgressBarMessage="Отправляем..."
+                           ProgressValue="{Binding SendingProgressValue}"
+                           Visibility="{Binding IsSending,
+                                                Converter={StaticResource BoolToVisibilityConverter}}"   />
+    </Grid>
+    
+
+    
+    <!--<phone:PhoneApplicationPage.ApplicationBar>
+
+        <shell:ApplicationBar  IsMenuEnabled="True" Opacity="1.0">
+            <shell:ApplicationBar.Buttons>
+                <shell:ApplicationBarIconButton x:Name="SendEmail" Text="отправить" IconUri="/Assets/AppBar/feature.email.png" IsEnabled="False" Click="SendEmailButton_Click"/>
+            </shell:ApplicationBar.Buttons>
+        </shell:ApplicationBar>
+
+    </phone:PhoneApplicationPage.ApplicationBar>-->
+</local:BasePhonePage>

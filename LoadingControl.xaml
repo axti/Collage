@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="InstaCollage.LoadingControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             Name="_self">
+
+    <Grid x:Name="LoadingControlLayoutRoot">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <ProgressBar x:Name="_progressBar"
+                     Grid.Row="1"
+                     IsIndeterminate="True"
+                     Value="0" Foreground="#FFFFA400" />
+        <TextBlock x:Name="_progressBarMessage"
+                   Grid.Row="2"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Top"
+                   FontSize="{StaticResource PhoneFontSizeMediumLarge}"
+                   Text="Загрузка..." Foreground="#ffa400" />
+    </Grid>
+</UserControl>
